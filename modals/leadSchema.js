@@ -4,6 +4,8 @@ const leadSchema=mongoose.Schema({
    feed:[Object],
    status:Boolean,
    date:String,
-   name:String
+   name:String,
+   today:Boolean,
+   tags:[String],
 })
 export const leadModel = mongoose.model("lead",leadSchema)
