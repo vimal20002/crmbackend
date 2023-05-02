@@ -81,11 +81,11 @@ MoneyArambh Soft. Ltd`
 
     }
 }
+setTimeout(()=>{
+
     setPass();
-    const date=new Date()
-    date+1;
-  
-    console.log(date)
+},24*60*60*1000)
+    
     
   
    
