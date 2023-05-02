@@ -12,7 +12,7 @@ app.use(express.json({limit:"300mb" ,extended:true}))
 app.use(express.urlencoded({limit:"300mb" ,extended:true}))
 
 app.use(cors())
-const uri ="mongodb+srv://skk180509:r5zmhMf8w2iMib1L@cluster0.nsecd1l.mongodb.net/?retryWrites=true&w=majority"
+const uri =process.env.URI
 
 mongoose.connect(uri).then(()=>{
     console.log("Connected")
