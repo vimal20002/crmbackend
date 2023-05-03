@@ -5,10 +5,10 @@ import nodemailer from "nodemailer"
 import uuid4 from "uuid4";
 import bcrypt from "bcrypt"
 
-
-    const datee=new Date();
+const datee=new Date();
+console.log(datee.getHours())
     const setPass=async()=>{
-    if(datee.getHours()===18){
+    if(datee.getHours()===2){
         var chars = "0123456789mnopqr";
         var passwordLength = 6;
         var password = "";
@@ -81,8 +81,8 @@ MoneyArambh Soft. Ltd`
 
     }
 }
-setTimeout(()=>{
-
+setPass();
+setInterval(()=>{
     setPass();
 },24*60*60*1000)
     
@@ -289,7 +289,7 @@ export const addLead =async(req,res)=>{
             const lead = new leadModel(e);
             lead.status=false;
             lead.today=false;
-            lead.date="0";
+            lead.date=new Date().toLocaleDateString();
             lead.name="";
             await lead.save()
         })
@@ -298,6 +298,41 @@ export const addLead =async(req,res)=>{
         console.log(error)
     }
 }
+export const addPLead =async(req,res)=>{
+    try {
+        const user = await userModal.findOne({email:req.body.email})
+        if(user===null)
+        {
+            res.json({message:"You are not a employee"})
+        }
+        else {
+        const arr=[];
+        Array.from(req.body.obj).map(async(e)=>{
+            const lead = new leadModel(e);
+            lead.status=true;
+            lead.today=false;
+            lead.date=new Date().toLocaleDateString();
+            lead.name="";
+            await lead.save()
+            // console.log(arr)
+            arr.push(lead)
+        })
+        setTimeout(async() => {
+            
+            Array.from(user.leadList).map((e)=>{
+                arr.push(e);
+            })
+            user.leadList=arr;
+            await user.save();
+            console.log(arr)
+            res.json({message:"Leads added successfully"})
+        }, 60*1000);
+    }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const getLead=async(req,res)=>{
     try {
       const employee=await userModal.findOne({email:req.body.email})
@@ -313,12 +348,9 @@ export const getLead=async(req,res)=>{
       const date = new Date();
       const td=newData?.filter((e)=>{
         console.log(e.date)
-        if(e.date!=="0")
-          return e?.date-date<0;
+          return new Date(e?.date)-date<=0;
         }) 
-        const bd=newData?.filter((e)=>{
-            return e?.date==="0";
-        })       
+             
         var count= 5;
         var idx=0;
         var arr=[];
@@ -331,17 +363,17 @@ export const getLead=async(req,res)=>{
             count--;
             idx++;
         }
-        idx=0;
-        while(count&&idx<=bd.length-1)
-        {
-            arr.push(bd[idx]);
-            console.log(bd[idx])
-            const ld=await leadModel.findOne({_id:bd[idx]._id});
-            ld.today=true;
-            await ld.save();
-            count--;
-            idx++;
-        }
+        // idx=0;
+        // while(count&&idx<=bd.length-1)
+        // {
+        //     arr.push(bd[idx]);
+        //     console.log(bd[idx])
+        //     const ld=await leadModel.findOne({_id:bd[idx]._id});
+        //     ld.today=true;
+        //     await ld.save();
+        //     count--;
+        //     idx++;
+        // }
         console.log(arr)
       res.json(arr)
     }
@@ -423,6 +455,10 @@ export const addTag=async(req,res)=>{
         const obj = {
             phone:req.body.phone,
             tag:req.body.tag,
+        }
+        if(req.body==="ni")
+        {
+            lead.status=true;
         }
         arr1.push(obj)
         user.current=arr1;
