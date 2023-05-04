@@ -6,7 +6,7 @@ import uuid4 from "uuid4";
 import bcrypt from "bcrypt"
 
 const datee=new Date();
-console.log(datee.getHours())
+console.log(datee)
     const setPass=async()=>{
     if(datee.getHours()===18){
         var chars = "0123456789mnopqr";
