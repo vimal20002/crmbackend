@@ -151,16 +151,21 @@ export const login =async(req,res)=>{
         {
             const admin = await adminModel.findOne({email:"sid@admin.com"})
             if(admin){
-            if(admin.password===req.body.token && bcrypt.compare(req.body.password,user.password))
+            if(admin.password===req.body.token && await bcrypt.compare(req.body.password,user.password))
             res.json(user);
+            else{
+                res.json({message:"You are not a employee"})
             }
-  
-     else{
-        res.json({message:"Invalid Credentials"})
+        }
+        
+    }
+        
+        else{
+            res.json({message:"You are not a employee"})
      }
             }
            
-    } catch (error) {
+            catch (error) {
         console.log(error)
     }
 }
