@@ -8,7 +8,7 @@ import bcrypt from "bcrypt"
 const datee=new Date();
 console.log(datee.getHours())
     const setPass=async()=>{
-    if(datee.getHours()===2){
+    if(datee.getHours()===18){
         var chars = "0123456789mnopqr";
         var passwordLength = 6;
         var password = "";
