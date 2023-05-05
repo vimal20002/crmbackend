@@ -353,10 +353,7 @@ export const getLead=async(req,res)=>{
         return e?.status===false && e?.today===false;
       })
       const date = new Date();
-      const bd=newData?.filter((e)=>{
-        console.log(e.date)
-          return e?.tags?.length==0;
-        }) 
+     
       const td=newData?.filter((e)=>{
         console.log(e.date)
           return date - new Date(e?.date)<=86400000;
@@ -375,6 +372,14 @@ export const getLead=async(req,res)=>{
             count--;
             idx++;
         }
+        if(count<=0)
+        {
+            res.json(arr)
+        }
+        const bd=newData?.filter((e)=>{
+            console.log(e.date)
+              return e?.tags?.length==0;
+            }) 
         idx=0;
         while(count&&idx<=bd.length-1)
         {
@@ -385,6 +390,24 @@ export const getLead=async(req,res)=>{
             count--;
             idx++;
         }
+        if(count<=0)
+        {
+            res.json(arr)
+        }
+        const ht=newData?.filter((e)=>{
+            console.log(e.date)
+              return e?.tags?.length!=0;
+            }) 
+            idx=0;
+            while(count&&idx<=ht.length-1)
+            {
+                arr.push(ht[idx]);
+                const ld=await leadModel.findOne({_id:ht[idx]._id});
+                ld.today=true;
+                await ld.save();
+                count--;
+                idx++;
+            }
         console.log(arr)
       res.json(arr)
     }
