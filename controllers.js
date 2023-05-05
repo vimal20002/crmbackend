@@ -345,20 +345,27 @@ export const getLead=async(req,res)=>{
       {
         res.json({message:'You are not an Employee!'})
       }
+      
       else{
       const data = await leadModel.find({})
+      data.reverse();
       const newData=data.filter((e)=>{
         return e?.status===false && e?.today===false;
       })
       const date = new Date();
+      const bd=newData?.filter((e)=>{
+        console.log(e.date)
+          return e?.tags?.length==0;
+        }) 
       const td=newData?.filter((e)=>{
         console.log(e.date)
-          return new Date(e?.date)-date<=0;
+          return date - new Date(e?.date)<=86400000;
         }) 
              
         var count= 5;
         var idx=0;
         var arr=[];
+        
         while(count&&idx<=td.length-1)
         {
             arr.push(td[idx]);
@@ -368,17 +375,16 @@ export const getLead=async(req,res)=>{
             count--;
             idx++;
         }
-        // idx=0;
-        // while(count&&idx<=bd.length-1)
-        // {
-        //     arr.push(bd[idx]);
-        //     console.log(bd[idx])
-        //     const ld=await leadModel.findOne({_id:bd[idx]._id});
-        //     ld.today=true;
-        //     await ld.save();
-        //     count--;
-        //     idx++;
-        // }
+        idx=0;
+        while(count&&idx<=bd.length-1)
+        {
+            arr.push(bd[idx]);
+            const ld=await leadModel.findOne({_id:bd[idx]._id});
+            ld.today=true;
+            await ld.save();
+            count--;
+            idx++;
+        }
         console.log(arr)
       res.json(arr)
     }
