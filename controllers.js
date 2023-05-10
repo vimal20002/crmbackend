@@ -6,9 +6,9 @@ import uuid4 from "uuid4";
 import bcrypt from "bcrypt"
 
 const datee=new Date();
-console.log(datee)
+console.log(datee.getHours())
     const setPass=async()=>{
-    if(datee.getHours()===13){
+    if(datee.getHours()===5){
         var chars = "0123456789mnopqr";
         var passwordLength = 6;
         var password = "";
