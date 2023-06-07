@@ -153,7 +153,7 @@ export const login =async(req,res)=>{
             console.log("welcome")
             const admin = await adminModel.findOne({email:"sid@admin.com"})
             if(admin){
-                console.log(admin.password===req.body.token , await bcrypt.compare(req.body.password,user.password))
+                console.log(admin.password,req.body.token)
             if(admin.password===req.body.token && await bcrypt.compare(req.body.password,user.password))
             res.json(user);
             else{
