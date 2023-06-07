@@ -147,6 +147,7 @@ export const login =async(req,res)=>{
     try {
         console.log(req.body)
         const user = await userModal.findOne({email:req.body.email});
+        console.log(user)
         if(user)
         {
             console.log(user)
