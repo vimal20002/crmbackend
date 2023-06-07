@@ -149,6 +149,7 @@ export const login =async(req,res)=>{
         const user = await userModal.findOne({email:req.body.email});
         if(user)
         {
+            console.log(user)
             const admin = await adminModel.findOne({email:"sid@admin.com"})
             if(admin){
             if(admin.password===req.body.token && await bcrypt.compare(req.body.password,user.password))
