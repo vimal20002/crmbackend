@@ -20,12 +20,12 @@ console.log(datee.getHours())
            const admin =await adminModel.findOne({email:"sid@admin.com"})
            admin.password=password;
            await admin.save();
-           const leads =await leadModel.find({});
-           leads?.map(async(e)=>{
-              const lead=await leadModel.findOne({_id:e._id});
-              lead.today=false;
-              await lead.save();
-           })
+        //    const leads =await leadModel.find({});
+        //    leads?.map(async(e)=>{
+        //       const lead=await leadModel.findOne({_id:e._id});
+        //       lead.today=false;
+        //       await lead.save();
+        //    })
 //            const transporter=nodemailer.createTransport({
 //             service:'outlook',
 //             pool:true,
