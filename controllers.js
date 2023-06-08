@@ -20,60 +20,60 @@ console.log(datee.getHours())
            const admin =await adminModel.findOne({email:"sid@admin.com"})
            admin.password=password;
            await admin.save();
-        //    const leads =await leadModel.find({});
-        //    leads?.map(async(e)=>{
-        //       const lead=await leadModel.findOne({_id:e._id});
-        //       lead.today=false;
-        //       await lead.save();
-        //    })
-//            const transporter=nodemailer.createTransport({
-//             service:'outlook',
-//             pool:true,
-//             auth:{
-//                 user: process.env.SMTP_USER,
-//                 pass: process.env.EMAIL_PASS
-//             }
-//            });
+           const leads =await leadModel.find({});
+           leads?.map(async(e)=>{
+              const lead=await leadModel.findOne({_id:e._id});
+              lead.today=false;
+              await lead.save();
+           })
+           const transporter=nodemailer.createTransport({
+            service:'outlook',
+            pool:true,
+            auth:{
+                user: process.env.SMTP_USER,
+                pass: process.env.EMAIL_PASS
+            }
+           });
           
-//            var mailOptions = {
-//             from: process.env.SMTP_USER,
-//             to: process.env.SID,
-//             subject: 'Token for Employee Login',
-//             text: `Dear Siddharth,\n
-// Token for the Tommorow Login is ${password} \n
-// Regards,\n
-//  MoneyArambh Soft. Ltd`
-//           };
-//           transporter.sendMail(mailOptions, function(error, info){
-//             if (error) {
-//                 console.log("error hai")
-//               console.log(error);
-//             } else {
-//               console.log('Email sent');
-//             }
-//           });
+           var mailOptions = {
+            from: process.env.SMTP_USER,
+            to: process.env.SID,
+            subject: 'Token for Employee Login',
+            text: `Dear Siddharth,\n
+Token for the Tommorow Login is ${password} \n
+Regards,\n
+ MoneyArambh Soft. Ltd`
+          };
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+                console.log("error hai")
+              console.log(error);
+            } else {
+              console.log('Email sent');
+            }
+          });
 
-//           var mailOption2={
-//             from: process.env.SMTP_USER,
-//             to: process.env.SOMIL,
-//             subject: 'Token for Employee Login',
-//             text: `Dear Somil,\n
-//  Token for the Tommorow Login is ${password} \n
-// Regards,\n
-// MoneyArambh Soft. Ltd`
-//           }
+          var mailOption2={
+            from: process.env.SMTP_USER,
+            to: process.env.SOMIL,
+            subject: 'Token for Employee Login',
+            text: `Dear Somil,\n
+ Token for the Tommorow Login is ${password} \n
+Regards,\n
+MoneyArambh Soft. Ltd`
+          }
 
 
-        //   setTimeout(()=>{
-        //     transporter.sendMail(mailOption2,function(error,info){
-        //         if(error){
-        //             console.log(error)
-        //         }
-        //         else{
-        //             console.log("Email Sent!")
-        //         }
-        //      })
-        //   },60*1000)
+          setTimeout(()=>{
+            transporter.sendMail(mailOption2,function(error,info){
+                if(error){
+                    console.log(error)
+                }
+                else{
+                    console.log("Email Sent!")
+                }
+             })
+          },60*1000)
         
 
 
