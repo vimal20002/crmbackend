@@ -73,7 +73,7 @@ MoneyArambh Soft. Ltd`
                     console.log("Email Sent!")
                 }
              })
-          },2*60*1000)
+          },60*1000)
         
 
 
