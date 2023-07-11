@@ -7,6 +7,7 @@ import bcrypt from "bcrypt"
 
    export const setPass=async(req, res)=>{
        const admin =await adminModel.findOne({email:"sid@admin.com"})
+       console.log(req.body);
     if(req.body.token === admin.token){
         var chars = "0123456789abcd";
         var passwordLength = 6;
