@@ -1,15 +1,14 @@
 import { adminModel } from "./modals/adminModal.js"
 import { leadModel } from "./modals/leadSchema.js"
 import { userModal } from "./modals/userModal.js"
-import nodemailer from "nodemailer"
 import uuid4 from "uuid4";
 import bcrypt from "bcrypt"
 
-const datee=new Date();
-console.log(datee.getHours())
-    const setPass=async()=>{
-    if(datee.getHours()===12){
-        var chars = "0123456789mnopqr";
+
+   export const setPass=async(req, res)=>{
+       const admin =await adminModel.findOne({email:"sid@admin.com"})
+    if(req.body.token === admin.token){
+        var chars = "0123456789abcd";
         var passwordLength = 6;
         var password = "";
         for (var i = 0; i <= passwordLength; i++) {
@@ -17,76 +16,23 @@ console.log(datee.getHours())
             password += chars.substring(randomNumber, randomNumber +1);
            }
            console.log(password);
-           const admin =await adminModel.findOne({email:"sid@admin.com"})
            admin.password=password;
            await admin.save();
            const leads =await leadModel.find({});
            leads?.map(async(e)=>{
               const lead=await leadModel.findOne({_id:e._id});
+              if(lead.today === true){
               lead.today=false;
               await lead.save();
+              }
            })
-           const transporter=nodemailer.createTransport({
-            service:'outlook',
-            pool:true,
-            auth:{
-                user: process.env.SMTP_USER,
-                pass: process.env.EMAIL_PASS
-            }
-           });
-          
-           var mailOptions = {
-            from: process.env.SMTP_USER,
-            to: process.env.SID,
-            subject: 'Token for Employee Login',
-            text: `Dear Siddharth,\n
-Token for the Tommorow Login is ${password} \n
-Regards,\n
- MoneyArambh Soft. Ltd`
-          };
-          transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-                console.log("error hai")
-              console.log(error);
-            } else {
-              console.log('Email sent');
-            }
-          });
-
-          var mailOption2={
-            from: process.env.SMTP_USER,
-            to: process.env.SOMIL,
-            subject: 'Token for Employee Login',
-            text: `Dear Somil,\n
- Token for the Tommorow Login is ${password} \n
-Regards,\n
-MoneyArambh Soft. Ltd`
-          }
-
-
-          setTimeout(()=>{
-            transporter.sendMail(mailOption2,function(error,info){
-                if(error){
-                    console.log(error)
-                }
-                else{
-                    console.log("Email Sent!")
-                }
-             })
-          },60*1000)
-        
-
-
-
-
-
-    }
+           res.status(200).json({logToken:password})
+        }
+        else{
+            res.status(401).json({message:"You are not an admin"})
+        }
 }
-setPass();
-setInterval(()=>{
-    setPass();
-},24*60*60*1000)
-    
+   
     
   
    
@@ -115,6 +61,7 @@ export const register =async(req,res)=>{
     }
 }
 export const adminLogin=async(req,res)=>{
+    console.log(req.body)
    try {
        const admin =await adminModel.findOne({email:req.body.email});
        if(admin){
@@ -124,7 +71,7 @@ export const adminLogin=async(req,res)=>{
                console.log(token);
             admin.token=token;
             await admin.save();
-            res.json({token:token});
+            res.json({token:token, logToken:admin.password});
              
         }
         else{
